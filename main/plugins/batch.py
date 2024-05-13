@@ -157,7 +157,7 @@ async def run_batch(userbot, client, sender, countdown, link):
             return -2
 
 C = "/cancel"
-START_PIC = "https://ibb.co/pvms44r"
+START_PIC = "https://telegra.ph/file/744179675a4e02e2602f4.jpg"
 TEXT = "👋 Hi, This is ' Restricted Content Saver' bot Made with ❤️ by PragyanCoder"
 
 @gagan.on(events.NewMessage(pattern=f"^{C}"))
