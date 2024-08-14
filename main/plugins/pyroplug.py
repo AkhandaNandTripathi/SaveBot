@@ -1,3 +1,5 @@
+#fix /setchat here and add mongo for better optimization # Join t.me/PragyanCoder
+
 import asyncio, time, os
 
 from pyrogram.enums import ParseMode , MessageMediaType
@@ -171,7 +173,7 @@ async def get_msg(userbot, client, sender, edit_id, msg_link, i, file_n):
             if msg.media and msg.media==MessageMediaType.WEB_PAGE:
                 a = b = True
                 edit = await client.edit_message_text(sender, edit_id, "Cloning.")
-                
+                if '--'  in msg.text.html or '**' in msg.text.html or '__' in msg.text.html or '~~' in msg.text.html or '||' in msg.text.html or '```' in msg.text.html or '`' in msg.text.html:
                     await send_message_with_chat_id(client, sender, msg.text.html, parse_mode=ParseMode.HTML)
                     a = False
                 if '<b>' in msg.text.markdown or '<i>' in msg.text.markdown or '<em>' in msg.text.markdown  or '<u>' in msg.text.markdown or '<s>' in msg.text.markdown or '<spoiler>' in msg.text.markdown or '<a href=>' in msg.text.markdown or '<pre' in msg.text.markdown or '<code>' in msg.text.markdown or '<emoji' in msg.text.markdown:
@@ -184,8 +186,7 @@ async def get_msg(userbot, client, sender, edit_id, msg_link, i, file_n):
             if not msg.media and msg.text:
                 a = b = True
                 edit = await client.edit_message_text(sender, edit_id, "Cloning.")
-                if '--'  in msg.text.html or '**' in msg.text.html or '__' in msg.text.html or '~~' in msg.text.html or '||' in msg.text.html or '
-' in msg.text.html or '' in msg.text.html:
+                if '--'  in msg.text.html or '**' in msg.text.html or '__' in msg.text.html or '~~' in msg.text.html or '||' in msg.text.html or '```' in msg.text.html or '`' in msg.text.html:
                     await send_message_with_chat_id(client, sender, msg.text.html, parse_mode=ParseMode.HTML)
                     a = False
                 if '<b>' in msg.text.markdown or '<i>' in msg.text.markdown or '<em>' in msg.text.markdown  or '<u>' in msg.text.markdown or '<s>' in msg.text.markdown or '<spoiler>' in msg.text.markdown or '<a href=>' in msg.text.markdown or '<pre' in msg.text.markdown or '<code>' in msg.text.markdown or '<emoji' in msg.text.markdown:
@@ -303,4 +304,4 @@ async def get_msg(userbot, client, sender, edit_id, msg_link, i, file_n):
 async def get_bulk_msg(userbot, client, sender, msg_link, i):
     x = await client.send_message(sender, "Processing!")
     file_name = ''
-    await get_msg(userbot, client, sender, x.id, msg_link, i, file_name)
+    await get_msg(userbot, client, sender, x.id, msg_link, i, file_name) 
