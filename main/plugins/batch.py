@@ -1,5 +1,3 @@
-#Join t.me/PragyanCoder
-
 import logging
 import time, os, asyncio
 import json
@@ -22,14 +20,8 @@ logger = logging.getLogger(__name__)
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
 logging.getLogger("telethon").setLevel(logging.WARNING)
 
-
 batch = []
 ids = []
-
-'''async def get_pvt_content(event, chat, id):
-    msg = await userbot.get_messages(chat, ids=id)
-    await event.client.send_message(event.chat_id, msg) 
-'''
 
 @gagan.on(events.NewMessage(incoming=True, pattern='/batch'))
 async def _batch(event):
@@ -46,7 +38,6 @@ async def _batch(event):
                 except Exception:
                     await conv.send_message("No link found.")
             except Exception as e:
-                #print(e)
                 logger.info(e)
                 return await conv.send_message("Cannot wait more longer for your response!")
             await conv.send_message(f"Send me the number of files/range you want to save from the given message, as a reply to this message.", buttons=Button.force_reply())
@@ -54,7 +45,6 @@ async def _batch(event):
                 _range = await conv.get_reply()
             except Exception as e:
                 logger.info(e)
-                #print(e)
                 return await conv.send_message("Cannot wait more longer for your response!")
             try:
                 value = int(_range.text)
@@ -87,7 +77,6 @@ async def cancel(event):
     ids.clear()
     batch.clear()
 
-    
 async def run_batch(userbot, client, sender, countdown, link):
     for i in range(len(ids)):
         timer = 6
@@ -110,7 +99,6 @@ async def run_batch(userbot, client, sender, countdown, link):
             timer = 1 if i < 500 else 2
         try: 
             count_down = f"**Batch process ongoing.**\n\nProcess completed: {i+1}"
-            #a =ids[i]
             try:
                 msg_id = int(link.split("/")[-1])
             except ValueError:
@@ -119,7 +107,11 @@ async def run_batch(userbot, client, sender, countdown, link):
                 link_ = link.split("?single")[0]
                 msg_id = int(link_.split("/")[-1])
             integer = msg_id + int(ids[i])
-            await get_bulk_msg(userbot, client, sender, link, integer)
+            try:
+                await asyncio.wait_for(get_bulk_msg(userbot, client, sender, link, integer), timeout=30)
+            except asyncio.TimeoutError:
+                await client.send_message(sender, f"Timeout occurred after 30 seconds for message ID: {integer}.")
+                continue
             protection = await client.send_message(sender, f"Sleeping for `{timer}` seconds to avoid Floodwaits and Protect account!")
             await countdown.edit(count_down, 
                                  buttons=[[Button.url("Join Channel", url="https://t.me/PragyanCoder")]])
@@ -140,14 +132,11 @@ async def run_batch(userbot, client, sender, countdown, link):
                 await asyncio.sleep(ors)
                 await fw_alert.delete()
                 try:
-                    await get_bulk_msg(userbot, client, sender, link, integer)
-                except Exception as e:
-                    #print(e)
-                    logger.info(e)
-                    if countdown.text != count_down:
-                        await countdown.edit(count_down, buttons=[[Button.url("Join Channel", url="http://t.me/PragyanCoder")]])
+                    await asyncio.wait_for(get_bulk_msg(userbot, client, sender, link, integer), timeout=30)
+                except asyncio.TimeoutError:
+                    await client.send_message(sender, f"Timeout occurred after 30 seconds for message ID: {integer}.")
+                    continue
         except Exception as e:
-            #print(e)
             logger.info(e)
             await client.send_message(sender, f"An error occurred during cloning, batch will continue.\n\n**Error:** {str(e)}")
             if countdown.text != count_down:
@@ -178,10 +167,3 @@ async def start_command(event):
     )
             
 TEXTING = """
-```
-Execute /batch command only when you 100% sure.
-Bcz /cancel event is removed to make bot work perfectly.
-Thanks - CoderPragyan
-
-```
-"""
