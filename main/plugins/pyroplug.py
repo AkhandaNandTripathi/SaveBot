@@ -171,7 +171,7 @@ async def get_msg(userbot, client, sender, edit_id, msg_link, i, file_n):
             if msg.media and msg.media==MessageMediaType.WEB_PAGE:
                 a = b = True
                 edit = await client.edit_message_text(sender, edit_id, "Cloning.")
-                if '--'  in msg.text.html or '**' in msg.text.html or '__' in msg.text.html or '~~' in msg.text.html or '||' in msg.text.html or '
+                if '--'  in msg.text.html or '' in msg.text.html or '__' in msg.text.html or '~~' in msg.text.html or '||' in msg.text.html or '
 ' in msg.text.html or '' in msg.text.html:
                     await send_message_with_chat_id(client, sender, msg.text.html, parse_mode=ParseMode.HTML)
                     a = False
