@@ -166,4 +166,4 @@ async def start_command(event):
         buttons=buttons
     )
             
-TEXTING = """
+
