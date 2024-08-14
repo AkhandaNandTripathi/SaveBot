@@ -20,6 +20,7 @@ logger = logging.getLogger(__name__)
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
 logging.getLogger("telethon").setLevel(logging.WARNING)
 
+
 batch = []
 ids = []
 
@@ -112,6 +113,7 @@ async def run_batch(userbot, client, sender, countdown, link):
             except asyncio.TimeoutError:
                 await client.send_message(sender, f"Timeout occurred after 30 seconds for message ID: {integer}.")
                 continue
+            await asyncio.sleep(30)  # Add a 30-second delay between each upload to avoid flood wait errors
             protection = await client.send_message(sender, f"Sleeping for `{timer}` seconds to avoid Floodwaits and Protect account!")
             await countdown.edit(count_down, 
                                  buttons=[[Button.url("Join Channel", url="https://t.me/PragyanCoder")]])
@@ -133,6 +135,7 @@ async def run_batch(userbot, client, sender, countdown, link):
                 await fw_alert.delete()
                 try:
                     await asyncio.wait_for(get_bulk_msg(userbot, client, sender, link, integer), timeout=30)
+                    await asyncio.sleep(30)  # Add a 30-second delay between each upload to avoid flood wait errors
                 except asyncio.TimeoutError:
                     await client.send_message(sender, f"Timeout occurred after 30 seconds for message ID: {integer}.")
                     continue
@@ -166,4 +169,3 @@ async def start_command(event):
         buttons=buttons
     )
             
-
